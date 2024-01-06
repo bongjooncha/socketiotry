@@ -7,6 +7,7 @@ module.exports = function(io){
 
         socket.on("login",async(userName,cb)=>{
             //유저 저장
+            console.log({userName});
             try{
                 console.log("back에서 받음",userName);
                 const user = await userController.saveUser(userName,socket.id);
@@ -26,7 +27,9 @@ module.exports = function(io){
                 //user 찾기 (await을 통해서 데이터 정제)
                 const user = await userController.checkUser(socket.id);
                 //메세지 저장
+                console.log(user);
                 const newMessage = await chatController.saveChat(message,user);
+                console.log(newMessage);
                 io.emit("message",newMessage);
                 cb({ok:true});
             }catch(error){
@@ -35,6 +38,7 @@ module.exports = function(io){
         });
 
         socket.on("disconnect", async ()=>{
+            console.log("아무거나");
             const user = await userController.checkUser(socket.id);
             const goodbyeMessage ={
                 chat: `${user.name} left this room`,
@@ -43,5 +47,7 @@ module.exports = function(io){
             io.emit("message",goodbyeMessage);
             console.log("사용자 끊김");
         });
+
+        // socket.emit("rooms", await roomController.getAllRooms()); // 룸 리스트 보내기
     });
 };

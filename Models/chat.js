@@ -9,9 +9,13 @@ const chatSchema = new mongoose.Schema(
                 ref: "User",
             },
             name: String,
+        },    
+        room: {
+            type: mongoose.Schema.ObjectId,
+            ref: "Room",
+          },
         },
-    },
-    {timestamp: true}
+        { timestamp: true }
 );
 
 module.exports = mongoose.model("Chat",chatSchema)

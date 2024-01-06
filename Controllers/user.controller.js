@@ -2,11 +2,11 @@ const User = require("../Models/user");
 const userController = {};
 
 //user 저장
-userController.saveUser = async(userName, socketId)=>{
+userController.saveUser = async (userName, socketId) => {
     //있는 유저
-    let user = await User.findOne({name:userName});
+    let user = await User.findOne({ name: userName });
     //없는 유저
-    if (!user){
+    if (!user) {
         user = new User({
             name: userName,
             token: socketId,
@@ -21,8 +21,9 @@ userController.saveUser = async(userName, socketId)=>{
 };
 
 //user찾기
-userController.checkUser = async(socketId)=>{
-    const user = await User.findOne({token: socketId});
+userController.checkUser = async (socketId) => {
+    console.log({ socketId });
+    const user = await User.findOne({ token: socketId });
     if (!user) throw new Error("user not found");
     return user;
 };
